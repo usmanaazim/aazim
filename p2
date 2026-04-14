@@ -1,0 +1,66 @@
+import java.util.Scanner;
+
+public class MonoAlphabeticCipher {
+
+    public static String encrypt(String text, String key) {
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder result = new StringBuilder();
+
+        text = text.toUpperCase();
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+
+            if (Character.isLetter(ch)) {
+                int index = alphabet.indexOf(ch);
+                result.append(key.charAt(index));
+            } else {
+                result.append(ch); 
+            }
+        }
+        return result.toString();
+    }
+
+    public static String decrypt(String text, String key) {
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder result = new StringBuilder();
+
+        text = text.toUpperCase();
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+
+            if (Character.isLetter(ch)) {
+                int index = key.indexOf(ch);
+                result.append(alphabet.charAt(index));
+            } else {
+                result.append(ch);
+            }
+        }
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter 26-letter key (no duplicates): ");
+        String key = sc.nextLine().toUpperCase();
+
+        if (key.length() != 26) {
+            System.out.println("Invalid key! Key must contain exactly 26 letters.");
+            return;
+        }
+
+        System.out.println("Enter the text: ");
+        String text = sc.nextLine();
+
+        String encrypted = encrypt(text, key);
+        System.out.println("Encrypted Text: " + encrypted);
+
+        String decrypted = decrypt(encrypted, key);
+        System.out.println("Decrypted Text: " + decrypted);
+
+        sc.close();
+    }
+}
