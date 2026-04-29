@@ -1,0 +1,33 @@
+Import java.math.BigInteger;
+Import java.security.SecureRandom;
+Public class BlumBlumShub {
+Private BigInteger p, q, M, seed;
+Public BlumBlumShub(int bitLength) {
+SecureRandom random = new SecureRandom();
+Do {
+P = BigInteger.probablePrime(bitLength, random);
+} while (!p.mod(BigInteger.valueOf(4)).equals(BigInteger.valueOf(3)));
+Do {
+Q = BigInteger.probablePrime(bitLength, random);
+} while (!q.mod(BigInteger.valueOf(4)).equals(BigInteger.valueOf(3)));
+M = p.multiply(q);
+Do {
+Seed = new BigInteger(bitLength * 2, random);
+} while (!seed.gcd(M).equals(BigInteger.ONE)); }
+Public int nextBit() {
+Seed = seed.modPow(BigInteger.valueOf(2), M);
+Return seed.mod(BigInteger.valueOf(2)).intValue(); }
+Public BigInteger nextNumber(int bits) {
+BigInteger result = BigInteger.ZERO;
+For (int I = 0; I < bits; i++) {
+Result = result.shiftLeft(1);
+Result = result.or(BigInteger.valueOf(nextBit())); }
+Return result; }
+Public static void main(String[] args) {
+BlumBlumShub bbs = new BlumBlumShub(64);
+System.out.println(“Generated Random Bits:”);
+For (int I = 0; I < 20; i++) {
+System.out.print(bbs.nextBit() + “ “); }
+System.out.println(“\n\nGenerated Random Number (16 bits):”);
+System.out.println(bbs.nextNumber(16));
+} }
