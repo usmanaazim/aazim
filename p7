@@ -1,0 +1,85 @@
+Import java.util.*;
+Public class SDES {
+Static int[] P10 = {3, 5, 2, 7, 4, 10, 1, 9, 8, 6};
+Static int[] P8 = {6, 3, 7, 4, 8, 5, 10, 9};
+Static int[] P4 = {2, 4, 3, 1};
+Static int[] IP = {2, 6, 3, 1, 4, 8, 5, 7};
+Static int[] IP_INV = {4, 1, 3, 5, 7, 2, 8, 6};
+Static int[] EP = {4, 1, 2, 3, 2, 3, 4, 1};
+Static int[][] S0 = {
+{1, 0, 3, 2},
+{3, 2, 1, 0},
+{0, 2, 1, 3},
+{3, 1, 3, 2} };
+Static int[][] S1 = {
+{0, 1, 2, 3},
+{2, 0, 1, 3},
+{3, 0, 1, 0},
+{2, 1, 0, 3} };
+Static String permute(String input, int[] table) {
+StringBuilder output = new StringBuilder();
+For (int I : table) {
+Output.append(input.charAt(I – 1)); }
+Return output.toString(); }
+Static String leftShift(String input, int shifts) {
+Return input.substring(shifts) + input.substring(0, shifts); }
+Static String xor(String a, String b) {
+StringBuilder result = new StringBuilder();
+For (int I = 0; I < a.length(); i++) {
+Result.append(a.charAt(i) ^ b.charAt(i)); }
+Return result.toString(); }
+Static String sBox(String input, int[][] sbox) {
+Int row = Integer.parseInt(“” + input.charAt(0) + input.charAt(3), 2);
+Int col = Integer.parseInt(“” + input.charAt(1) + input.charAt(2), 2);
+Int val = sbox[row][col];
+Return String.format(“%2s”, Integer.toBinaryString(val)).replace(‘ ‘, ‘0’); }
+Static String[] generateKeys(String key) {
+Key = permute(key, P10);
+String left = key.substring(0, 5);
+String right = key.substring(5);
+Left = leftShift(left, 1);
+Right = leftShift(right, 1);
+String K1 = permute(left + right, P8);
+Left = leftShift(left, 2);
+Right = leftShift(right, 2);
+String K2 = permute(left + right, P8);
+Return new String[]{K1, K2}; }
+Static String fk(String input, String key) {
+String left = input.substring(0, 4);
+String right = input.substring(4);
+String temp = permute(right, EP);
+Temp = xor(temp, key);
+String leftPart = temp.substring(0, 4);
+String rightPart = temp.substring(4);
+String s0 = sBox(leftPart, S0);
+String s1 = sBox(rightPart, S1);
+String combined = permute(s0 + s1, P4);
+String result = xor(left, combined);
+Return result + right; }
+Static String swap(String input) {
+Return input.substring(4) + input.substring(0, 4); }
+Static String encrypt(String plaintext, String key) {
+String[] keys = generateKeys(key);
+String ip = permute(plaintext, IP);
+String round1 = fk(ip, keys[0]);
+String swapped = swap(round1);
+String round2 = fk(swapped, keys[1]);
+Return permute(round2, IP_INV); }
+Static String decrypt(String ciphertext, String key) {
+String[] keys = generateKeys(key);
+String ip = permute(ciphertext, IP);
+String round1 = fk(ip, keys[1]);
+String swapped = swap(round1);
+String round2 = fk(swapped, keys[0]);
+Return permute(round2, IP_INV); }
+Public static void main(String[] args) {
+Scanner sc = new Scanner(System.in);
+System.out.print(“Enter 10-bit key: “);
+String key = sc.next();
+System.out.print(“Enter 8-bit plaintext: “);
+String plaintext = sc.next();
+String cipher = encrypt(plaintext, key);
+System.out.println(“Encrypted: “ + cipher);
+String decrypted = decrypt(cipher, key);
+System.out.println(“Decrypted: “ + decrypted);
+Sc.close(); } }
