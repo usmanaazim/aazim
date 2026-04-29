@@ -1,0 +1,32 @@
+Import java.math.BigInteger;
+Import java.security.SecureRandom;
+Public class RSA {
+Private BigInteger p, q, n, phi, e, d;
+Private int bitLength = 1024;
+Private SecureRandom random = new SecureRandom();
+Public RSA() {
+P = BigInteger.probablePrime(bitLength, random);
+Q = BigInteger.probablePrime(bitLength, random);
+N = p.multiply(q);
+Phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
+E = BigInteger.valueOf(65537);
+While (!phi.gcd€.equals(BigInteger.ONE)) {
+E = e.add(BigInteger.TWO); }
+D = e.modInverse(phi); }
+Public BigInteger encrypt(BigInteger message) {
+Return message.modPow(e, n); }
+Public BigInteger decrypt(BigInteger ciphertext) {
+Return ciphertext.modPow(d, n); }
+Public BigInteger getPublicKeyE() { return e; }
+Public BigInteger getModulusN() { return n; }
+Public static void main(String[] args) {
+RSA rsa = new RSA();
+String text = “HELLO”;
+BigInteger message = new BigInteger(text.getBytes());
+System.out.println(“Original Message: “ + text);
+BigInteger encrypted = rsa.encrypt(message);
+System.out.println(“Encrypted Message: “ + encrypted);
+BigInteger decrypted = rsa.decrypt(encrypted);
+String decryptedText = new String(decrypted.toByteArray());
+System.out.println(“Decrypted Message: “ + decryptedText);
+} }
