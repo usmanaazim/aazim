@@ -1,0 +1,39 @@
+Import java.math.BigInteger;
+Import java.util.Scanner;
+Public class FermatEuler {
+Public static BigInteger gcd(BigInteger a, BigInteger b) {
+Return a.gcd(b); }
+Public static BigInteger phi(BigInteger n) {
+BigInteger result = n;
+BigInteger I = BigInteger.valueOf(2);
+BigInteger temp = n;
+While (i.multiply(i).compareTo(temp) <= 0) {
+If (temp.mod(i).equals(BigInteger.ZERO)) {
+While (temp.mod(i).equals(BigInteger.ZERO)) {
+Temp = temp.divide(i); }
+Result = result.subtract(result.divide(i)); }
+I = i.add(BigInteger.ONE); }
+If (temp.compareTo(BigInteger.ONE) > 0) {
+Result = result.subtract(result.divide(temp)); }
+Return result; }
+Public static void main(String[] args) {
+Scanner sc = new Scanner(System.in);
+System.out.print(“Enter value of a: “);
+BigInteger a = sc.nextBigInteger();
+System.out.print(“Enter prime number p (for Fermat): “);
+BigInteger p = sc.nextBigInteger();
+System.out.print(“Enter number n (for Euler): “);
+BigInteger n = sc.nextBigInteger();
+If (p.isProbablePrime(100)) {
+BigInteger fermat = a.modPow(p.subtract(BigInteger.ONE), p);
+System.out.println(“\nFermat Result (a^(p-1) mod p): “ + fermat);
+} else {
+System.out.println(“\n p is not prime. Fermat’s theorem not applicable.”); }
+If (gcd(a, n).equals(BigInteger.ONE)) {
+BigInteger phi_n = phi(n);
+BigInteger euler = a.modPow(phi_n, n);
+System.out.println(“\nEuler Totient φ(n): “ + phi_n);
+System.out.println(“Euler Result (a^φ(n) mod n): “ + euler);
+} else {
+System.out.println(“\n Sc.close(); } }
+a and n are not coprime. Euler’s theorem not applicable.”); }
